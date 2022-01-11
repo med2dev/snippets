@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist>
+<dict>
+    <key>Label</key>
+    <string>mentalplex.test</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/coltrane/bin/test</string>
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>LANG</key>
+        <string>en_US.UTF-8</string>
+    </dict>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Minute</key>
+        <integer>4</integer>
+        <key>Hour</key>
+        <integer>17</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/coltrane/Programming/Unix_Workbench/test.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/coltrane/Programming/Unix_Workbench/test.log</string>
+</dict>
+</plist>
