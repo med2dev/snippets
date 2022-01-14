@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+<!-- template for OS X launchd.plist -->
+<!-- DO NOT LOAD AS IS. It's a reference file -->
+
+<!-- format: plist: dict: and a series of keys -->
+<!-- for details, see: man launchd.plist -->
+<!-- INSTRUCTIONS FOR THIS TEMPLATE:
+    1. Choose A UNIQUE NAME TO IDENTIFY THE JOB
+       Usually this the name of the launch agent without the .plist suffix
+       By convention, the name is prefixed with something that identifies the
+       organization that produces it, usually the top level domain in reverse
+       order, e.g., com.apple or com.adobe
+    2. Insert ABSOLUTE PATH TO A COMMAND
+       Do not use any expansions (no tilde prefixes, no environment variables).
+       Just use the absolute path.
+    3. Specify EnvironmentVariables
+       launchd runs in a sparse environment. You may run into odd bugs unless
+       you set, e.g., LANG. For R scripts, Check Sys.getenv() if you have
+       unexpected behavior that you can't replicate by running the R script
+       manually.
+    4. Set the Calendar Interval. Missing keys correspond to wildcards.
+       e.g., if Minute is 1, and everything else is gone, the job will repeat
+       every hour on the 01 minute. Specify Minute and Hour (remove the others),
+       and the job will repeat daily at that hour:minute
+    5. Set logging paths. It's important to log in your .plist in order to catch
+       unexpected behavior due to the environment used by launchd
+    6. save to ~/Library/LaunchAgents using the name of the job, with the .plist
+       suffix.
+    7. from a bash command line, run:
+       lanchctl load ~/Library/LaunchAgents/category.script.plist -->
+
+<plist>
+<dict>
+    <key>Label</key> <!-- required -->
+    <string>A UNIQUE NAME TO IDENTIFY THE JOB, e.g., mentalplex.template</string>
+
+    <key>Program</key> <!-- either Program or ProgramArguments is required-->
+    <string>ABSOLUTE PATH TO A COMMAND</string>
+
+        <!-- ProgramArguments key can be included if your command requires
+        arguments. Be careful, though, this is often misinterpreted for details,
+        see man launchd.plist and man execvp -->
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>LANG</key>
+        <string>en_US.UTF-8</string>
+    </dict>
+
+        <!-- for a scheduled job, use either StartInterval or
+        StartCalendarInterval. StartCalendarInterval has the benefit of running
+        at next wake time if machine was asleep when the job was scheduled-->
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Minute</key>
+        <integer></integer>
+
+        <key>Hour</key>
+        <integer></integer>
+
+        <key>Day</key>
+        <integer></integer>
+
+        <key>Weekday</key>
+        <integer></integer>
+
+        <key>Month</key>
+        <integer></integer>
+    </dict>
+
+    <!-- You've been putting log files in your project directory.
+    Whatever you choose, make sure you can find it. launchd run scripts can be
+    a bit buggy. You're going to want to check on things. -->
+
+    <key>StandardOutPath</key>
+    <string>/Users/coltrane/<PROJECT DIR>/template.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/coltrane/<PROJECT DIR>/template.log</string>
+
+</dict>
+</plist>
