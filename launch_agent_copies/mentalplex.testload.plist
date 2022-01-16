@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+
+<plist>
+<dict>
+    <key>Label</key> <!-- required -->
+    <string>mentalplex.testload</string>
+
+    <key>Program</key> <!-- either Program or ProgramArguments is required-->
+    <string>/Users/coltrane/Commands/testload</string>
+
+        <!-- ProgramArguments key can be included if your command requires
+        arguments. Be careful, though, this is often misinterpreted for details,
+        see man launchd.plist and man execvp -->
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>LANG</key>
+        <string>en_US.UTF-8</string>
+    </dict>
+
+        <!-- for a scheduled job, use either StartInterval or
+        StartCalendarInterval. StartCalendarInterval has the benefit of running
+        at next wake time if machine was asleep when the job was scheduled-->
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Minute</key>
+        <integer>2</integer>
+
+    </dict>
+
+    <!-- You've been putting log files in your project directory.
+    Whatever you choose, make sure you can find it. launchd run scripts can be
+    a bit buggy. You're going to want to check on things. -->
+
+    <key>StandardOutPath</key>
+    <string>/Users/coltrane/Programming/Unix_Workbench/testload.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/coltrane/Programming/Unix_Workbench/testload.log</string>
+
+</dict>
+</plist>
