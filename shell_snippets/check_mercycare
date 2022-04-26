@@ -1,0 +1,104 @@
+#!/usr/bin/env Rscript
+
+suppressMessages(expr = {
+    library(rvest)
+    library(twilio, quietly = TRUE)
+})
+
+url <- "https://www.mercycare.org/healthy-living/protect-yourself-from-illness/covid-19-coronavirus/vaccine-scheduling/covid-19-vaccination-online-scheduling/"
+css_to_select <- "#cms-page > div > div.CalloutWide > div > h3"
+
+
+
+Sys.setenv(TWILIO_SID = "ACc06d0566a0c63786fd5ed2124ecdffc0")
+Sys.setenv(TWILIO_TOKEN = "d64dd504efa71daa45bca727d7bafd60")
+
+from_number <- "+15305582163"
+admin_number <- "+18028297118"
+user_number <- "+13198998945"
+
+null_message <- paste0("At {Sys.time()}, Mercycare COVID 19 vaccine",
+                       " scheduling website has changed. The expected",
+                       " message ('All available appointments have been",
+                       " scheduled') was not found in the expected place.",
+                       " This may mean appointments are available, it ",
+                       "may mean the website was updated in some other way",
+                       ", or it may represent an error. Please check the ",
+                       "website to see if there are any available",
+                       " appointments. This message has also been",
+                       " sent to the administrator of this bot.")
+
+bar <- paste0(rep("#", 80), collapse = "")
+glue::glue("\n\n{bar}\n")
+glue::glue("{Sys.time()}: Starting check_mercycare.\n\n")
+
+glue::glue("{Sys.time()}: extracting text from callout header.\n\n")
+text <- html_text(html_nodes(xml2::read_html(url), css = css_to_select))
+
+glue::glue("{Sys.time()}: validating and evaluating callout text.\n")
+if (is.null(text)){
+    print(glue::glue("{bar}\n",
+                     "\n\n{Sys.time()}:",
+                     " unable to extract expected web element.\n",
+                     "This may be due to an error, or due to a change in the page.\n",
+                     "Messaging administrator and user.\n\n",
+                     "{bar}\n\n"))
+    
+    my_message <- tw_send_message(
+        to = get("admin_number", 1),
+        from = get("from_number", 1),
+        body =  glue::glue(null_message)
+    )
+    my_message <- tw_send_message(
+        to = get("user_number", 1),
+        from = get("from_number", 1),
+        body =  glue::glue(null_message)
+    )
+    
+    system2(
+        "open",
+        "/Users/coltrane/Projects/scrapers/mercycare_appointment_avail.log"
+    )
+    print(glue::glue("{bar}\n"))
+    print(glue::glue("{Sys.time()}: check the website for appointments.\n",
+                     "closing driver and stopping daemon.\n"))
+    print(glue::glue("{bar}\n"))
+    
+    system2(
+        "launchctl",
+        c("unload", "~/Library/LaunchAgents/mentalplex.check_mercycare.plist")
+    )
+    
+    
+} else if (grepl("^All available appointments have been scheduled", text)){
+    print(glue::glue("\n\n{Sys.time()}:",
+                     " Callout text: {text}\nNo message sent.\n\n"))
+    
+    
+} else {
+    print(glue::glue("\n\n{Sys.time()}: Callout text changed to:",
+                     " {text}\nMessage sent from {from_number}",
+                     " to {user_number}.\n\n"))
+    
+    my_message <- tw_send_message(
+        to = get("user_number", 1),
+        from = get("from_number", 1),
+        body =  glue::glue("At {Sys.time()}, Mercycare COVID 19 vaccine",
+                           " scheduling notice has changed. It is now: {text}")
+    )
+    
+    system2(
+        "open",
+        "/Users/coltrane/Projects/scrapers/mercycare_appointment_avail.log"
+    )
+    print(glue::glue("{bar}\n"))
+    print(glue::glue("{Sys.time()}: check the website for appointments.\n",
+                     "closing driver and stopping daemon.\n"))
+    print(glue::glue("{bar}\n"))
+
+    system2(
+        "launchctl",
+        c("unload", "~/Library/LaunchAgents/mentalplex.check_mercycare.plist")
+    )
+    
+}
