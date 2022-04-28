@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+
+for path in /Users/coltrane/Movies/*; do
+  if [[ -f $path ]]; then
+    printf "Transferring file: $path...\n...\n\n"
+    scp "$path" miles@davis.local:/home/miles/Videos
+  elif [[ $path != */TV ]]; then
+    printf "Transferring directory: $path...\n...\n\n"
+    scp -r "$path" miles@davis.local:/home/miles/Videos
+  fi
+done
