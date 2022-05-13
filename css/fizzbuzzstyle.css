@@ -1,0 +1,37 @@
+@import "../../eric_meyer_reset.css";
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box
+}
+
+:root {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    font-family: 'Helvetica', sans-serif;
+    margin: 3.2rem;
+}
+
+h1 {
+    font-size: 4rem;
+    padding: 2rem;
+    text-align: center;
+    
+}
+
+p {
+    padding: 0.8rem;
+}
+
+ol {
+    margin-left: 4rem;
+    list-style: style;
+}
+
+li {
+    margin: 0.8rem;
+}
