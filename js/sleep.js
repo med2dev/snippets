@@ -5,7 +5,7 @@ function sleep(ms){
 }
 
 // example
-async function_do_it_later(ms){
+async function do_it_later(ms){
   await sleep(ms)
   console.log(`You waited ${ms} milliseconds to do this`)
 }
