@@ -1,0 +1,24 @@
+# at the command line, method to destroy a git commit, all logs, and
+# any potential unwanted copies
+
+# This method is NOT for a mistake or bug you want to fix. Keep records of those
+# This method IS for accidental commits that contain confidential information
+
+
+# destroy the last commit and associated files
+git reset --hard HEAD^
+
+# permanently delete the reflog
+rm .git/logs/refs/heads/main # or whichever branch you were on
+
+# permanently delete the HEAD reflog
+rm .git/logs/HEAD
+
+# prune
+git prune
+
+# repack
+git repack -a -d
+
+# collect the garbage
+git gc
